@@ -2,7 +2,7 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QTextEdit
 from utils.config import AppConfig
-from .modules.menu_bar import MenuBar
+from .modules.menu_bar import ToolBar
 
 
 class MainWindow(QMainWindow):
@@ -28,7 +28,7 @@ class MainWindow(QMainWindow):
         central_widget.setLayout(layout)
 
         # Add Widgets to Window
-        self.setMenuBar(MenuBar(self))
+        self.setToolBar(ToolBar(self))
 
         layout.addWidget(self.treeview)
         layout.addWidget(self.editbox, stretch=1)
