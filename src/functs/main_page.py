@@ -10,6 +10,8 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        self.image_idx = 0
+
         # Create manager objects
         self.display_block_manager = DisplayBlockManager()
 
@@ -120,10 +122,12 @@ class MainWindow(QMainWindow):
         self.display_block_manager.display_selected_item()
 
     def display_prev_item(self):
-        self.display_block_manager.display_more_items(idx=((self.image_idx-1) % 3))
+        self.image_idx = (self.image_idx+1) % 3
+        self.display_block_manager.display_more_items(idx=self.image_idx)
 
     def display_next_item(self):
-        self.display_block_manager.display_more_items(idx=((self.image_idx+1) % 3))
+        self.image_idx = (self.image_idx+1) % 3
+        self.display_block_manager.display_more_items(idx=self.image_idx)
 
     def toggle_more(self):
         if self.more_widget.isVisible():

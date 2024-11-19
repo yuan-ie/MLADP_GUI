@@ -3,6 +3,8 @@ from PyQt6.QtGui import QPixmap
 from PyQt6.QtCore import Qt
 import os
 imagepath = "../functs/images/"
+imagepath_CNN = "../functs/CNN_images/"
+imagepath_RNF = "../functs/RNF_images/"
 
 class DisplayBlockManager:
     def __init__(self):
@@ -158,17 +160,18 @@ class DisplayBlockManager:
         if self.selected_item:
             # self.image_name = self.selected_item.text()
             more_image_name = self.more_dummy_list(idx)
-            self.pixmap = QPixmap(imagepath+more_image_name)
+            self.pixmap = QPixmap(more_image_name)
+            print(self.pixmap.isNull())
             if not self.pixmap.isNull():
-                self.image_label.setPixmap(self.pixmap.scaled(
-                    self.image_label.width(),
-                    self.image_label.height(),
+                self.more_label.setPixmap(self.pixmap.scaled(
+                    self.more_label.width(),
+                    self.more_label.height(),
                     Qt.AspectRatioMode.KeepAspectRatio
                 ))
             else:
-                self.image_label.setText("Image not found.")
+                self.more_label.setText("Image not found.")
         else:
-            self.image_label.setText("No item selected. Please select an item first.")
+            self.more_label.setText("No item selected. Please select an item first.")
 
     def dummy_list(self):
 
@@ -186,9 +189,10 @@ class DisplayBlockManager:
         return list_widget
     
     def more_dummy_list(self, idx):
-        image_og = self.image_name
-        image_RNF = self.image_name + "_RNF"
-        image_CNN = self.image_name + "_CNN"
+        image_og = imagepath + self.image_name
+        image_RNF = imagepath_RNF + self.image_name
+        image_CNN = imagepath_CNN + self.image_name
         more_image_list = [image_og, image_RNF, image_CNN]
+        print(idx, ": ", more_image_list[idx], "| original image: ", self.image_name)
         
         return more_image_list[idx]
