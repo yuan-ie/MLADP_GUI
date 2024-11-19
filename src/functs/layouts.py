@@ -8,7 +8,7 @@ def title_block():
     '''
     pass
 
-def menu_block(layout):
+def menu_block():
     '''
     Block two:
         contains buttons and search: About, All Data, and Search
@@ -36,7 +36,7 @@ def menu_block(layout):
 
     return block_two
 
-def display_block(layout):
+def display_block():
     block_three = QVBoxLayout()
     window_layout = QHBoxLayout()
     window_layout.setSpacing(30)  # Space between buttons
@@ -58,9 +58,6 @@ def display_block_left(b3_layout):
     left_layout.setStyleSheet("background-color: lightblue;")
     left_window = QVBoxLayout()
     left_layout.setLayout(left_window)
-    
-    
-    
 
     b3_layout.addWidget(left_layout)
 
