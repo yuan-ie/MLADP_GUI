@@ -1,8 +1,9 @@
 import sys
-from PyQt6.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QGroupBox
+from PyQt6.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QGroupBox, QStackedWidget
 from PyQt6.QtCore import Qt
 
 import layouts
+from display_block import DisplayBlockManager
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -23,25 +24,28 @@ class MainWindow(QMainWindow):
         # Main layout
         main_layout = QVBoxLayout()
 
-        # TITLE
-        # ----------------------------------------------------------------
-        title_label = QLabel("My Application Title")
-        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        title_label.setStyleSheet("font-size: 24px; font-weight: bold;")
-        # Add the title label to the layout with a stretch factor
-        main_layout.addWidget(title_label, 0)  # Stretch factor = 0, no extra space is given
+        # block one -- title block
+        block_one = layouts.title_block()
+        main_layout.addWidget(block_one, 0)  # Stretch factor = 0, no extra space is given
 
-        # BUTTONS (Block Two)
-        # ----------------------------------------------------------------
-
-        block_two = layouts.menu_block()
+        # block two -- menu bar
+        block_two, about_button, data_button = layouts.menu_block()
         main_layout.addLayout(block_two)
 
-        # WINDOWS (Block Three)
-        # ----------------------------------------------------------------
 
-        block_three = layouts.display_block()
-        main_layout.addLayout(block_three)
+        # block three -- stacked widget
+        self.stacked_widget = QStackedWidget()
+
+        # Create widgets for each view
+        self.about_widget = self.create_about_widget()
+        self.data_widget = self.create_data_widget()
+
+        # Add widgets to the stacked widget
+        self.stacked_widget.addWidget(self.about_widget)
+        self.stacked_widget.addWidget(self.data_widget)
+
+        # block three -- display: images (left), scrollbar list + buttons (right)
+        main_layout.addWidget(self.stacked_widget)
         
 
         main_layout.addStretch(1)
@@ -49,21 +53,37 @@ class MainWindow(QMainWindow):
         # Set the central widget layout
         central_widget.setLayout(main_layout)
 
-        # # Apply QSS (Qt Style Sheets) for rounded buttons and padding
-        # self.setStyleSheet("""
-        #     QPushButton {
-        #         border-radius: 15px;
-        #         padding: 10px;
-        #         background-color: #4CAF50;
-        #         color: white;
-        #         font-size: 16px;
-        #     }
+        # Connect buttons to corresponding slots
+        about_button.clicked.connect(self.show_about)  # About Me button
+        data_button.clicked.connect(self.show_data)   # All Data button
+        
+    def create_data_widget(self):
+        data_widget = QWidget()
+        data_layout = QVBoxLayout()
 
-        #     QPushButton:hover {
-        #         background-color: #45a049;
-        #     }
+        self.display_block_manager = DisplayBlockManager()
+        display_block, button_select, button_more, button_save = self.display_block_manager.display_block()
+        data_layout.addLayout(display_block)
+        data_widget.setLayout(data_layout)
 
-        #     QPushButton:pressed {
-        #         background-color: #3e8e41;
-        #     }
-        # """)
+        button_select.clicked.connect(self.display_selected_item)
+
+        return data_widget
+    
+    def create_about_widget(self):
+        about_widget = QWidget()
+        about_layout = QVBoxLayout()
+        about_label = QLabel("This will be about me...")
+        about_layout.addWidget(about_label)
+        about_widget.setLayout(about_layout)
+
+        return about_widget
+    
+    def show_about(self):
+        self.stacked_widget.setCurrentWidget(self.about_widget)
+
+    def show_data(self):
+        self.stacked_widget.setCurrentWidget(self.data_widget)
+
+    def display_selected_item(self):
+        self.display_block_manager.display_selected_item()
