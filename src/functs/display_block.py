@@ -104,10 +104,10 @@ class DisplayBlockManager:
 
     def display_selected_item(self):
         if self.selected_item:
-            image_name = self.selected_item.text()
-            pixmap = QPixmap(imagepath+image_name)
-            if not pixmap.isNull():
-                self.image_label.setPixmap(pixmap.scaled(
+            self.image_name = self.selected_item.text()
+            self.pixmap = QPixmap(imagepath+self.image_name)
+            if not self.pixmap.isNull():
+                self.image_label.setPixmap(self.pixmap.scaled(
                     self.image_label.width(),
                     self.image_label.height(),
                     Qt.AspectRatioMode.KeepAspectRatio
@@ -116,6 +116,39 @@ class DisplayBlockManager:
                 self.image_label.setText("Image not found.")
         else:
             self.image_label.setText("No item selected. Please select an item first.")
+
+    def display_more(self):
+        more_layout = QVBoxLayout()
+
+        self.more_window = QGroupBox("More")
+        self.more_window.setStyleSheet("background-color: lightblue;")
+        self.more_window.setFixedSize(600,500)
+        self.more_window.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.more_window_layout =  QVBoxLayout()
+
+        self.more_label = QLabel("No image.")
+        self.more_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.more_window_layout.addWidget(self.more_label)
+        self.more_window.setLayout(self.more_window_layout)
+
+
+
+        more_layout.addWidget(self.more_window)
+
+        return more_layout
+    #     if self.selected_item:
+
+    #         pixmap = QPixmap(imagepath+self.image_name)
+    #         if not pixmap.isNull():
+    #             self.image_label.setPixmap(pixmap.scaled(
+    #                 self.image_label.width(),
+    #                 self.image_label.height(),
+    #                 Qt.AspectRatioMode.KeepAspectRatio
+    #             ))
+    #         else:
+    #             self.image_label.setText("Image not found.")
+    #     else:
+    #         self.image_label.setText("No item selected. Please select an item first.")
 
     def dummy_list(self):
 
