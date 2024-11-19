@@ -10,6 +10,9 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        # Create manager objects
+        self.display_block_manager = DisplayBlockManager()
+
         # Set window properties
         self.setWindowTitle("PyQt6 GUI with Styling")
         self.setGeometry(100, 100, 800, 600)
@@ -80,17 +83,13 @@ class MainWindow(QMainWindow):
         data_layout = QVBoxLayout()
 
         # Display the data
-        self.display_block_manager = DisplayBlockManager()
         display_block, self.button_select, self.button_more, self.button_save = self.display_block_manager.display_block()
         data_layout.addLayout(display_block)
         data_layout.addSpacing(15)
         data_widget.setLayout(data_layout)
 
-        
-
         self.button_select.clicked.connect(self.display_selected_item)
         
-
         return data_widget
     
     def create_more_widget(self):
@@ -99,13 +98,14 @@ class MainWindow(QMainWindow):
         more_layout = QVBoxLayout()
     
         # Display more
-        self.stats_block_manager = StatsBlockManager()
-        more_block = self.display_block_manager.display_more()
+        more_block, left_button, right_button = self.display_block_manager.display_more()
         more_layout.addLayout(more_block)
         more_widget.setLayout(more_layout)
         more_widget.hide()
 
         self.button_more.clicked.connect(self.toggle_more)
+        left_button.clicked.connect(self.display_prev_item)
+        right_button.clicked.connect(self.display_next_item)
 
         return more_widget
     
@@ -119,9 +119,16 @@ class MainWindow(QMainWindow):
         self.more_widget.hide()
         self.display_block_manager.display_selected_item()
 
+    def display_prev_item(self):
+        self.display_block_manager.display_more_items(idx=((self.image_idx-1) % 3))
+
+    def display_next_item(self):
+        self.display_block_manager.display_more_items(idx=((self.image_idx+1) % 3))
+
     def toggle_more(self):
         if self.more_widget.isVisible():
             self.more_widget.hide()
         else:
+            self.image_idx = 0
             self.more_widget.show()
             self.more_widget.update()
