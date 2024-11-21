@@ -39,3 +39,33 @@ def title_block():
     title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
     title_label.setStyleSheet("font-size: 24px;") # font-weight: bold;
     return title_label
+
+def type_block():
+    type_layout = QVBoxLayout()
+
+    non_cancerous_layout = QVBoxLayout()
+    non_cancerous_label = QLabel("Non-cancerous Types")
+    non_cancerous_label.setStyleSheet("font-size: 12px; font-weight: bold;")
+    non_cancerous_types = QLabel("bckg: Background\nnorm: Normal\nartf: Artificial\nnull: Null\n")
+    non_cancerous_layout.addWidget(non_cancerous_label)
+    non_cancerous_layout.addWidget(non_cancerous_types)
+
+    prob_cancerous_layout = QVBoxLayout()
+    prob_cancerous_label = QLabel("Potentially-cancerous Types")
+    prob_cancerous_label.setStyleSheet("font-size: 12px; font-weight: bold;")
+    prob_cancerous_types = QLabel("nneo: Non-neoplastic\nsusp: Suspicious\ninfl: Inflammation\n")
+    prob_cancerous_layout.addWidget(prob_cancerous_label)
+    prob_cancerous_layout.addWidget(prob_cancerous_types)
+
+    cancerous_layout = QVBoxLayout()
+    cancerous_label = QLabel("Cancerous Types")
+    cancerous_label.setStyleSheet("font-size: 12px; font-weight: bold;")
+    cancerous_types = QLabel("dcis: Ductal carcinoma in situ\nindc: Invasive ductal carcinoma\n")
+    cancerous_layout.addWidget(cancerous_label)
+    cancerous_layout.addWidget(cancerous_types)
+
+    type_layout.addLayout(non_cancerous_layout)
+    type_layout.addLayout(prob_cancerous_layout)
+    type_layout.addLayout(cancerous_layout)
+
+    return type_layout

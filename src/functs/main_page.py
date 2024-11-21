@@ -137,11 +137,9 @@ class MainWindow(QMainWindow):
         
         types_widget = QWidget()
         types_layout = QVBoxLayout()
+        type_block = layouts.type_block()
 
-        # Display Types
-        type_label = QLabel("stuff")
-
-        types_layout.addWidget(type_label, 0)
+        types_layout.addLayout(type_block, 0)
         types_layout.addStretch(1)
         types_widget.setLayout(types_layout)
 
